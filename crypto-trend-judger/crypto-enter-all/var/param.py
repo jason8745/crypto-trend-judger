@@ -1,0 +1,7 @@
+# token = ""
+# org = ""
+# influxdb_url=""
+# rabbit_pw=""
+# rabbit_ac=""
+# server = ""
+# rabbitmq_port=""
