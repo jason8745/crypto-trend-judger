@@ -1,7 +1,6 @@
 import threading
 #####
 #subpackage
-import subpackage.loggers as loggers
 from Business_Logic.super_trend_cal import super_trend_calculate_15m
 from Business_Logic.ttmsquze_cal import ttmsqueze_calculate_15m
 from Business_Logic.rsi_cal import rsi_15m

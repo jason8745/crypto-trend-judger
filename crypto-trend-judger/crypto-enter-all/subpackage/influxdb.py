@@ -5,15 +5,7 @@
 #####
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
-import pandas as pd 
-import numpy as np
-import datetime
-import time
 import subpackage.loggers as loggers
-import subpackage.global_var as gl
-#####
-# var
-from var.param import token,org,influxdb_url
 
 
 
@@ -64,7 +56,6 @@ class influxdb_cli:
                 |> pivot(rowKey:["_time"],columnKey: ["_field"],valueColumn: "_value")\
                 |> sort(columns: ["_time"], desc: false)\
                 |> drop(columns: ["_start","_stop","dimention","_measurement"])'
-        # w,m,d
         # connet to influxdb
         # 建立query api
         query_api = self.client.query_api()
@@ -90,7 +81,6 @@ class influxdb_cli:
         |> pivot(rowKey:["_time"],columnKey: ["_field"],valueColumn: "_value")\
         |> sort(columns: ["_time"], desc: false)\
         |> drop(columns: ["_start","_stop","_measurement","type"])'
-        # w,m,d
         # connet to influxdb
         # 建立query api
         query_api = self.client.query_api()
@@ -115,7 +105,6 @@ class influxdb_cli:
         |> filter(fn: (r) => r["dimention"] == "{time_dim}")\
         |> sort(columns: ["_time"], desc: false)\
         |> drop(columns: ["_start","_stop","_measurement","type","_field","dimention","symbol"])'
-        # w,m,d
         # connet to influxdb
         # 建立query api
         query_api = self.client.query_api()
@@ -128,7 +117,7 @@ class influxdb_cli:
     
 
     def writedata(self,sig,sym,time_dim,time_index):
-        with InfluxDBClient(url=influxdb_url, token=token, org=org) as client:          
+        with InfluxDBClient(url=self.url, token=self.token, org=self.org) as client:          
             write_api = client.write_api(write_options=SYNCHRONOUS)
             try:
                 point = Point('crypto_enter')\
@@ -139,10 +128,8 @@ class influxdb_cli:
                 .time(time_index,WritePrecision.NS)
             except Exception as e:
                 loggers.logger.error(e)       
-            # 一次寫入influxdb
             try:
-                write_api.write("cryptocurrency", org, point)
-                # loggers.logger.info('Success insert supertrend enter signal data')
+                write_api.write("cryptocurrency", self.org, point)
             except Exception as e:
                 loggers.logger.error(e)
     

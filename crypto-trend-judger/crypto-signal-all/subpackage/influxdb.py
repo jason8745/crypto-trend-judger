@@ -35,7 +35,6 @@ class influxdb_cli:
         |> pivot(rowKey:["_time"],columnKey: ["_field"],valueColumn: "_value")\
         |> sort(columns: ["_time"], desc: false)\
         |> drop(columns: ["_start","_stop","_measurement","type"])'
-        # w,m,d
         # connet to influxdb
         # 建立query api
         query_api = self.client.query_api()

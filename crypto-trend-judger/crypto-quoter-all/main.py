@@ -3,9 +3,15 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 import datetime
 import time
 from binance.client import Client
-
-
-
+import os
+#####
+# 環境變數
+INFLUXDB_URL = os.environ.get('INFLUXDB_URL') 
+INFLUXDB_TOKEN = os.environ.get('INFLUXDB_TOKEN') 
+INFLUXDB_ORG = os.environ.get('INFLUXDB_ORG')
+BINANCE_API_KEY = os.environ.get('BINANCE_API_KEY')
+BINANCE_API_SECRET = os.environ.get('BINANCE_API_SECRET')
+#####
 def insertdata(url,token,org,bucket,api_key,api_secret):
 
     with InfluxDBClient(url, token=token, org=org) as client:
@@ -109,13 +115,7 @@ def insertdata(url,token,org,bucket,api_key,api_secret):
 
 if __name__ == "__main__":
     subscribe=['BTCUSDT','ETHUSDT'] # 訂閱清單
-    influxdb_url = ""
-    influxdb_token = ""
-    influxdb_org = ""
-    influxdb_bucket = ""
-    binance_api_key = ""
-    binance_api_secret = ""
-    
     while True:
-        insertdata(influxdb_url,influxdb_token,influxdb_org,influxdb_bucket,binance_api_key,binance_api_secret)
+        # bucket先使用"cryptocurrency" 也可以自行設置
+        insertdata(INFLUXDB_URL,INFLUXDB_TOKEN,INFLUXDB_ORG,"cryptocurrency",BINANCE_API_KEY,BINANCE_API_SECRET)
         time.sleep(30)
